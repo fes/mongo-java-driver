@@ -195,6 +195,9 @@ public class RawDBObject implements DBObject {
 	    case NUMBER_INT:
 		size += 4;
 		break;
+	    case NUMBER_LONG:
+		size += 8;
+		break;
             case OID:
                 size += 12;
                 break;
@@ -249,6 +252,8 @@ public class RawDBObject implements DBObject {
                 return _buf.getDouble( _dataStart );
 	    case NUMBER_INT:
 		return _buf.getInt( _dataStart );
+	    case NUMBER_LONG:
+		return _buf.getLong( _dataStart );
 	    case OID:
 		return new ObjectId( _buf.getLong( _dataStart ) , _buf.getInt( _dataStart + 8 ) );
 	    case CODE:

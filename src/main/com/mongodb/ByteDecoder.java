@@ -178,6 +178,10 @@ public class ByteDecoder extends Bytes {
             o.put( name , _buf.getInt() );
             break;
 	    
+        case NUMBER_LONG:
+            o.put( name , _buf.getLong() );
+            break;
+           
         case SYMBOL:
             // intentional fallthrough
         case STRING:

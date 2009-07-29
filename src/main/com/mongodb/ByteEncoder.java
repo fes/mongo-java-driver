@@ -381,7 +381,11 @@ public class ByteEncoder extends Bytes {
 
     protected int putNumber( String name , Number n ){
         int start = _buf.position();
-	if ( n instanceof Integer ){
+       if ( n instanceof Long ){
+           _put( NUMBER_LONG , name );
+           _buf.putLong( n.longValue() );
+       }
+       else if ( n instanceof Integer ){
 	    _put( NUMBER_INT , name );
 	    _buf.putInt( n.intValue() );
 	}
