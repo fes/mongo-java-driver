@@ -78,8 +78,15 @@ public class RawDBObject implements DBObject {
         throw new RuntimeException( "read only" );
     }
 
+    /**
+     * @deprecated
+     */
     public boolean containsKey( String key ){
-        return findElement( key ) != null;
+        return containsField(key);
+    }
+
+    public boolean containsField( String field ){
+        return findElement( field ) != null;
     }
 
     public Set<String> keySet(){    
@@ -190,6 +197,7 @@ public class RawDBObject implements DBObject {
                 break;
             case DATE:
             case NUMBER:
+            case NUMBER_LONG:
                 size += 8;
                 break;
 	    case NUMBER_INT:

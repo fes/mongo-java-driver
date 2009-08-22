@@ -18,6 +18,8 @@
 
 package com.mongodb.util;
 
+import com.mongodb.DBObject;
+import com.mongodb.BasicDBObjectBuilder;
 import org.testng.annotations.Test;
 
 public class JSONTest extends com.mongodb.util.TestCase {
@@ -63,6 +65,20 @@ public class JSONTest extends com.mongodb.util.TestCase {
     public void testMulti() {
         assertEquals(JSON.serialize(JSON.parse("{\'\' : \"\", \"34\" : -52.5}")), "{ \"\" : \"\" , \"34\" : -52.5}") ;
     }    
+
+    @org.testng.annotations.Test(groups = {"basic"})
+    public void testUnicode() {
+        assertEquals(JSON.serialize(JSON.parse("{'x' : \"hi\\u0020\"}")),"{ \"x\" : \"hi \"}") ;
+        assertEquals(JSON.serialize(JSON.parse("{ \"x\" : \"\\u0E01\\u2702\\uF900\"}")), "{ \"x\" : \"\u0E01\u2702\uF900\"}");
+        assertEquals(JSON.serialize(JSON.parse("{ \"x\" : \"foo\\u0020bar\"}")), "{ \"x\" : \"foo bar\"}");
+    }
+
+    @org.testng.annotations.Test(groups = {"basic"})
+    public void testBin() {
+        byte b[] = {'a', 'b', 0, 'd'};
+        DBObject obj = BasicDBObjectBuilder.start().add("b", b).get();
+        assertEquals(JSON.serialize(obj), "{ \"b\" : <Binary Data>}");
+    }
 
 
     @org.testng.annotations.Test(groups = {"basic"})

@@ -41,7 +41,7 @@ public class DBObjectTest extends TestCase {
     @Test(groups = {"basic"})
     public void testBasicDBObjectToString()  {
         Map m = new HashMap();
-        m.put("key", new DBRef("foo", new ObjectId("123456789012123456789012")));
+        m.put("key", new DBPointer("foo", new ObjectId("123456789012123456789012")));
 
         DBObject obj = new BasicDBObject(m);
         assertEquals(obj.get("key").toString(), "{ \"$ref\" : \"foo\", \"$id\" : ObjectId(\"123456789012123456789012\") }");
@@ -106,6 +106,28 @@ public class DBObjectTest extends TestCase {
 
     }
 
+    @Test(groups = {"basic"})
+    public void testRemoveField() {
+        BasicDBObject obj = new BasicDBObject();
+        obj.put("x", "y");
+        obj.put("y", "z");
+
+        assertTrue(obj.containsKey("x"));
+        assertTrue(obj.containsKey("y"));
+        assertEquals(obj.toString(), "{ \"x\" : \"y\" , \"y\" : \"z\"}");
+
+        obj.removeField("x");
+
+        assertFalse(obj.containsKey("x"));
+        assertTrue(obj.containsKey("y"));
+        assertEquals(obj.toString(), "{ \"y\" : \"z\"}");
+
+        obj.put("x", "y");
+
+        assertTrue(obj.containsKey("x"));
+        assertTrue(obj.containsKey("y"));
+        assertEquals(obj.toString(), "{ \"y\" : \"z\" , \"x\" : \"y\"}");
+    }
     
     public static void main( String args[] ) {
         (new DBObjectTest()).runConsole();
